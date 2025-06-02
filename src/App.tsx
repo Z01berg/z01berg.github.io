@@ -1,44 +1,37 @@
-import { useEffect } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
-import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CV from './components/CV';
+import './App.css';
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('bg-grid-pattern');
-    return () => {
-      document.documentElement.classList.remove('bg-grid-pattern');
-    };
-  }, []);
-
   return (
-      <Router>
-        <ThemeProvider>
-          <Routes>
-            <Route path="/cv" element={<CV />} />
-            <Route path="/" element={
-              <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-                <Header />
-                <main>
+    <ThemeProvider>
+      <Router basename="/portfolio">
+        <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={
+                <>
                   <Hero />
                   <About />
-                  <Skills />
                   <Projects />
                   <Contact />
-                </main>
-                <Footer />
-              </div>
-            } />
-          </Routes>
-        </ThemeProvider>
+                </>
+              } />
+              <Route path="/cv" element={<CV />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </Router>
+    </ThemeProvider>
   );
 }
 
