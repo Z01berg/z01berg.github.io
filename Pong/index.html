@@ -1,0 +1,211 @@
+<style>
+    body {
+        background: black;
+        margin: 0;
+    }
+
+</style>
+
+<canvas></canvas>
+
+<script>
+    let mySound = new Audio('hit.wav')
+    let mySound2 = new Audio('death.wav')
+    let mySound3 = new Audio('music.mp3')
+    mySound3.volume = 0.3;
+
+    const canvas = document.querySelector('canvas')
+    const c = canvas.getContext('2d')
+
+    canvas.width = innerWidth - 1
+    canvas.height = innerHeight - 1
+
+
+    class Paddle {
+        constructor({
+            position
+        }) {
+            this.position = position
+            this.velocity = {
+                x: 0,
+                y: 0,
+            }
+            this.width = 10
+            this.height = 100
+        }
+
+        draw() {
+            c.fillStyle = 'white'
+            c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        }
+
+        update() {
+            this.draw()
+
+            if (
+                this.position.y + this.velocity.y > 0 &&
+                this.position.y + this.height + this.velocity.y < canvas.height
+            )
+                this.position.y += this.velocity.y
+        }
+    }
+
+    let score1 = 0;
+    let score2 = 0;
+
+    class Ball {
+        constructor({
+            position
+        }) {
+            this.position = position
+
+            const speed = 2 
+
+            const direction = {
+                x: Math.random() - 0.5 >= 0 ? -speed : speed,
+                y: Math.random() - 0.5 >= 0 ? -speed : speed,
+            }
+            this.velocity = {
+                x: direction.x,
+                y: direction.y,
+            }
+
+            this.width = 10
+            this.height = 10
+        }
+        
+        draw() {
+            c.fillStyle = 'white'
+            c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        }
+
+
+        drawScore() {
+            c.font = "200px Arial";
+            c.fillStyle = "#303030";
+            c.fillText(`${score1} - ${score2}`, (canvas.width / 2) - 200, canvas.height / 2);
+        }
+
+        update() {
+            this.draw()
+            this.drawScore()
+
+            const rightSide = this.position.x + this.width + this.velocity.x
+            const leftSide = this.position.x + this.velocity.x
+            const bottomSide = this.position.y + this.height
+            const topSide = this.position.y
+
+
+
+            if (paddle1.position.x > this.position.x) {
+                score2++;
+                ball.position.x = canvas.width / 2;
+                ball.position.y = canvas.height / 2;
+
+                mySound2.play()
+            }
+
+            if (paddle2.position.x < this.position.x) {
+                score1++;
+                ball.position.x = canvas.width / 2;
+                ball.position.y = canvas.height / 2;
+
+                mySound2.play()
+            }
+
+            if (leftSide <= paddle1.position.x &&
+                bottomSide >= paddle1.position.y &&
+                topSide <= paddle1.position.y + paddle1.height) {
+                
+                mySound.play()
+                this.velocity.x = -this.velocity.x
+            }
+
+
+            if (rightSide >= paddle2.position.x &&
+                bottomSide >= paddle2.position.y &&
+                topSide <= paddle2.position.y + paddle2.height) {
+                
+                mySound.play()
+                this.velocity.x = -this.velocity.x
+            }
+
+            if (this.position.y + this.height + this.velocity.y >= canvas.height ||
+                this.position.y + this.velocity.y <= 0) {
+                
+                mySound.play()
+                this.velocity.y = -this.velocity.y
+            }
+
+            this.position.x += this.velocity.x
+            this.position.y += this.velocity.y
+        }
+    }
+
+
+
+
+    const paddle1 = new Paddle({
+        position: {
+            x: 10,
+            y: 100,
+        },
+    })
+
+    const paddle2 = new Paddle({
+        position: {
+            x: canvas.width - 10 * 2,
+            y: 100,
+        },
+    })
+
+    const ball = new Ball({
+        position: {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+        },
+    })
+
+    function animate() {
+        requestAnimationFrame(animate)
+        c.fillStyle = 'black'
+        c.fillRect(0, 0, canvas.width, canvas.height)
+        paddle1.update()
+        paddle2.update()
+
+        ball.update()
+        mySound3.play()
+    }
+
+    animate()
+
+    addEventListener('keydown', (event) => {
+        const speed = 6
+        switch (event.key) {
+            case 'a':
+                paddle1.velocity.y = -speed
+                break
+            case 'd':
+                paddle1.velocity.y = speed
+                break
+
+            case 'ArrowLeft':
+                paddle2.velocity.y = -speed
+                break
+            case 'ArrowRight':
+                paddle2.velocity.y = speed
+                break
+
+            case 'm':
+                mySound3.volume = !mySound3.volume
+                break
+
+            case 'k':
+                mySound2.volume = !mySound2.volume
+                mySound.volume = !mySound.volume
+                break
+
+        }
+    })
+
+</script>
