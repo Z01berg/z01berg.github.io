@@ -11,6 +11,9 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
     rollupOptions: {
       external: ['lucide-react'],
       output: {
@@ -20,5 +23,5 @@ export default defineConfig({
       }
     }
   },
-  base: '/',
+  base: '/portfolio/',
 });
