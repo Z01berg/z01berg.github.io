@@ -20,5 +20,5 @@ export default defineConfig({
       }
     }
   },
-  base: '/z01berg.github.io/',
+  base: '/',
 });
