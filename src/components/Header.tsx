@@ -25,6 +25,14 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -34,8 +42,8 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <motion.a 
-          href="#hero" 
+        <motion.button 
+          onClick={() => scrollToSection('hero')}
           className="text-2xl font-bold text-gray-900 dark:text-white flex items-center"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -43,7 +51,7 @@ const Header = () => {
         >
           <Code2 className="w-8 h-8 mr-2 text-orange-500" />
           <span className="text-orange-500">Dev</span>Portfolio
-        </motion.a>
+        </motion.button>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
@@ -52,28 +60,28 @@ const Header = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <a href="#about" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">About</a>
+            <button onClick={() => scrollToSection('about')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">About</button>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <a href="#projects" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Projects</a>
+            <button onClick={() => scrollToSection('projects')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Projects</button>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <a href="#skills" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Skills</a>
+            <button onClick={() => scrollToSection('skills')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Skills</button>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <a href="#contact" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Contact</a>
+            <button onClick={() => scrollToSection('contact')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Contact</button>
           </motion.div>
           <motion.button 
             onClick={toggleTheme}
@@ -142,34 +150,30 @@ const Header = () => {
           transition={{ duration: 0.3 }}
         >
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            <a 
-              href="#about" 
-              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition"
-              onClick={() => setIsMenuOpen(false)}
+            <button 
+              onClick={() => scrollToSection('about')}
+              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
               About
-            </a>
-            <a 
-              href="#projects" 
-              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition"
-              onClick={() => setIsMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => scrollToSection('projects')}
+              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
               Projects
-            </a>
-            <a 
-              href="#skills" 
-              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition"
-              onClick={() => setIsMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => scrollToSection('skills')}
+              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
               Skills
-            </a>
-            <a 
-              href="#contact" 
-              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition"
-              onClick={() => setIsMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
               Contact
-            </a>
+            </button>
             <a 
               href="https://github.com/Z01berg" 
               target="_blank" 

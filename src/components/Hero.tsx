@@ -3,6 +3,13 @@ import { Code, Github, Linkedin, Mail, ArrowDown, FileText } from 'lucide-react'
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
       <section
           id="hero"
@@ -53,18 +60,18 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <a
-                  href="#projects"
+              <button
+                  onClick={() => scrollToSection('projects')}
                   className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center"
               >
                 View My Work
-              </a>
-              <a
-                  href="#contact"
+              </button>
+              <button
+                  onClick={() => scrollToSection('contact')}
                   className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 backdrop-blur-sm"
               >
                 Contact Me
-              </a>
+              </button>
               <Link 
                 to="/cv" 
                 className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 backdrop-blur-sm flex items-center"
@@ -119,13 +126,13 @@ const Hero = () => {
                   repeatDelay: 0.2
                 }}
             >
-              <a
-                  href="#about"
+              <button
+                  onClick={() => scrollToSection('about')}
                   className="p-2 rounded-full hover:bg-white/10 transition-colors"
                   aria-label="Scroll down"
               >
                 <ArrowDown className="w-8 h-8 text-white/70" />
-              </a>
+              </button>
             </motion.div>
           </div>
         </div>
