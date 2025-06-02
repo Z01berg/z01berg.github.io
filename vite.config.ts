@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -20,5 +21,5 @@ export default defineConfig({
       }
     }
   },
-  base: '/z01berg.github.io/',
+  base: process.env.NODE_ENV === 'production' ? '/z01berg.github.io/' : '/',
 });
