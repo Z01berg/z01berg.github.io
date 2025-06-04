@@ -16,7 +16,9 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
-      external: ['lucide-react'],
+      input: {
+        main: './index.html'
+      },
       output: {
         manualChunks: {
           'lucide-react': ['lucide-react']
