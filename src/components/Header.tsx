@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Github, Code2 } from 'lucide-react';
+import { Menu, X, Moon, Sun, Github, Code2, FileText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,6 +83,16 @@ const Header = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Contact</button>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.45 }}
+          >
+            <Link to="/cv" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition flex items-center">
+              <FileText className="w-5 h-5 mr-1" />
+              CV
+            </Link>
           </motion.div>
           <motion.button 
             onClick={toggleTheme}
@@ -174,6 +185,14 @@ const Header = () => {
             >
               Contact
             </button>
+            <Link 
+              to="/cv" 
+              className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left flex items-center"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <FileText className="w-5 h-5 mr-2" />
+              CV
+            </Link>
             <a 
               href="https://github.com/Z01berg" 
               target="_blank" 
