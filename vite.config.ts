@@ -18,13 +18,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './index.html'
-      },
-      output: {
-        manualChunks: {
-          'lucide-react': ['lucide-react']
-        }
       }
     }
   },
-  base: '/z01berg.github.io/',
+  base: './',
 });
