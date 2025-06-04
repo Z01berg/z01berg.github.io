@@ -21,5 +21,5 @@ export default defineConfig({
       }
     }
   },
-  base: '/z01berg.github.io/',
+  base: process.env.NODE_ENV === 'production' ? '/z01berg.github.io/' : '/',
 });
