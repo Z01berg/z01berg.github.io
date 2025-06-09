@@ -102,30 +102,30 @@ const Header = () => {
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                   language === 'en'
                     ? 'bg-orange-500 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                EN
+                English
               </button>
               <button
                 onClick={() => setLanguage('uk')}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                   language === 'uk'
                     ? 'bg-orange-500 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                UK
+                Українська
               </button>
               <button
                 onClick={() => setLanguage('pl')}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                   language === 'pl'
                     ? 'bg-orange-500 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                PL
+                Polski
               </button>
             </motion.div>
             <motion.button 

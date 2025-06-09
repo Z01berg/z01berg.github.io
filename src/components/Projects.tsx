@@ -203,7 +203,7 @@ const Projects = () => {
                 </button>
               </div>
               {lastFetchTime && (
-                <div className="text-sm text-gray-700 dark:text-gray-100 flex items-center">
+                <div className="text-sm text-gray-700 dark:text-gray-100 flex items-center relative z-0">
                   <Clock className="w-4 h-4 mr-1 text-gray-700 dark:text-gray-100" />
                   Last updated: {lastFetchTime}
                 </div>
