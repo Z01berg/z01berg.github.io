@@ -5,6 +5,8 @@ import ProjectCard from './ProjectCard';
 import { Github, RefreshCw, Clock, ArrowUpDown } from 'lucide-react';
 import ProjectService, { Project } from '../services/ProjectService';
 import CacheService from '../services/CacheService';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/main';
 
 // Define available tags with categories
 const AVAILABLE_TAGS = {
@@ -35,6 +37,8 @@ const Projects = () => {
   const [reloadCount, setReloadCount] = useState(0);
   const [lastReloadTime, setLastReloadTime] = useState<number>(0);
   const [cooldownUntil, setCooldownUntil] = useState<number>(0);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -54,7 +58,7 @@ const Projects = () => {
     // Check for rapid reloads
     if (now - lastReloadTime < 15 * 60 * 1000) { // 15 minutes
       setReloadCount(prev => prev + 1);
-      if (reloadCount >= 1) { // Already reloaded once in last 15 minutes
+      if (reloadCount >= 4) { // Allow 5 reloads (0-4) in last 15 minutes
         const cooldownTime = now + (12 * 60 * 60 * 1000); // 12 hours
         setCooldownUntil(cooldownTime);
         setError('Too many reloads. Please try again in 12 hours.');
@@ -94,6 +98,7 @@ const Projects = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchProjects();
   }, []);
 
@@ -167,13 +172,13 @@ const Projects = () => {
               className="flex-1"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-                My <span className="text-orange-500">Projects</span>
+                {t.projects.title}
               </h2>
               <p className="mt-2 text-gray-600 dark:text-gray-400">
-                A collection of my work and contributions
+                {t.projects.subtitle}
               </p>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">
-                Note: Tags are based on README analysis and difficulty rating is calculated automatically based on technologies used, project complexity, and activity metrics.
+                {t.projects.note}
               </p>
             </motion.div>
 
@@ -190,7 +195,7 @@ const Projects = () => {
                   rel="noopener noreferrer"
                   className="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
                 >
-                  <Github className="w-5 h-5 mr-2 text-white" /> GitHub Profile
+                  <Github className="w-5 h-5 mr-2 text-white" /> {t.projects.githubProfile}
                 </a>
 
                 <button
@@ -199,18 +204,18 @@ const Projects = () => {
                   className="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
                 >
                   <RefreshCw className={`w-5 h-5 mr-2 text-gray-800 dark:text-white ${loading ? 'animate-spin' : ''}`} />
-                  Refresh
+                  {t.projects.refresh}
                 </button>
               </div>
               {lastFetchTime && (
                 <div className="text-sm text-gray-700 dark:text-white flex items-center relative z-10">
                   <Clock className="w-4 h-4 mr-1 text-gray-700 dark:text-white" />
-                  Last updated: {lastFetchTime}
+                  {t.projects.lastUpdated} {lastFetchTime}
                 </div>
               )}
               {cooldownUntil > Date.now() && (
                 <div className="text-sm text-red-500 dark:text-red-400">
-                  Cooldown active. Try again in {Math.ceil((cooldownUntil - Date.now()) / (1000 * 60 * 60))} hours.
+                  {t.projects.cooldownActive} {Math.ceil((cooldownUntil - Date.now()) / (1000 * 60 * 60))} hours.
                 </div>
               )}
             </motion.div>
@@ -231,7 +236,7 @@ const Projects = () => {
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
               }`}
             >
-              All
+              {t.projects.all}
             </button>
             {getAllTags(projects).map((tag) => (
               <button
@@ -255,7 +260,7 @@ const Projects = () => {
                 className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
               >
                 <ArrowUpDown className="w-4 h-4" />
-                <span>Sort by {sortOrder === 'latest' ? 'Latest' : 'Earliest'}</span>
+                <span>{t.projects.sortBy} {sortOrder === 'latest' ? t.projects.latest : t.projects.earliest}</span>
               </button>
             </div>
           </div>

@@ -2,8 +2,11 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import { Octokit } from '@octokit/rest';
-import { Calendar, MapPin, Code2, Gamepad, Book, School, Trophy, Rocket } from 'lucide-react';
+import { Calendar, MapPin, Code2, Gamepad, Book, School, Trophy, Rocket, Heart, Star, Coffee, Music, Gamepad2, Palette, Globe } from 'lucide-react';
 import CacheService from '../services/CacheService';
+import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/main';
 
 interface GitHubInfo {
   name: string;
@@ -11,10 +14,19 @@ interface GitHubInfo {
   avatar_url: string;
   location: string;
   created_at: string;
+  public_repos: number;
+  followers: number;
+  following: number;
 }
 
 interface Milestone {
   year: string;
+  title: string;
+  description: string;
+  icon: JSX.Element;
+}
+
+interface Interest {
   title: string;
   description: string;
   icon: JSX.Element;
@@ -71,14 +83,40 @@ const milestones: Milestone[] = [
   }
 ];
 
+const interests: Interest[] = [
+  {
+    title: 'Game Development',
+    description: 'Passionate about creating immersive gaming experiences, combining technical skills with creative storytelling.',
+    icon: <Gamepad2 className="w-6 h-6" />
+  },
+  {
+    title: 'Japanese Culture',
+    description: 'Deeply interested in Japanese culture, language, and technology. Currently studying Japanese (N4 level).',
+    icon: <Globe className="w-6 h-6" />
+  },
+  {
+    title: 'Digital Art',
+    description: 'Enjoy creating digital art and pixel art, using tools like Aseprite and Blender for game assets.',
+    icon: <Palette className="w-6 h-6" />
+  },
+  {
+    title: 'Music',
+    description: 'Love exploring different music genres, especially video game soundtracks and Japanese music.',
+    icon: <Music className="w-6 h-6" />
+  }
+];
+
 const About = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   });
 
-  const [githubInfo, setGithubInfo] = useState<GitHubInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [githubInfo, setGithubInfo] = useState<GitHubInfo | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   useEffect(() => {
     const fetchGitHubInfo = async () => {
@@ -94,7 +132,10 @@ const About = () => {
             bio: data.bio || '',
             avatar_url: data.avatar_url,
             location: data.location || 'Poland',
-            created_at: new Date(data.created_at).getFullYear().toString()
+            created_at: new Date(data.created_at).getFullYear().toString(),
+            public_repos: data.public_repos,
+            followers: data.followers,
+            following: data.following
           };
         };
 
@@ -102,6 +143,7 @@ const About = () => {
         setGithubInfo(data);
       } catch (error) {
         console.error('Error fetching GitHub info:', error);
+        setError('Error fetching GitHub info. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -111,130 +153,152 @@ const About = () => {
   }, []);
 
   return (
-      <section
-          id="about"
-          className="py-20 bg-white dark:bg-gray-800"
-      >
-        <div className="container mx-auto px-4">
-          <motion.div
-              ref={ref}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-6xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
-              <span className="text-orange-500">About</span> Me
-            </h2>
+    <section
+      id="about"
+      className="py-20 bg-white dark:bg-gray-800"
+    >
+      <div className="container mx-auto px-4">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-6xl mx-auto"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+            <span className="text-orange-500">{t.about.title}</span>
+          </h2>
 
-            <div className="relative mb-12">
-              <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
+          <div className="relative mb-12">
+            <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center items-center min-h-[400px]">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
             </div>
+          ) : error ? (
+            <div className="text-center text-red-500 dark:text-red-400">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -50 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="space-y-8"
+              >
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{t.about.journey}</h3>
 
-            {loading ? (
-                <div className="flex justify-center items-center min-h-[400px]">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+                  <div className="space-y-8">
+                    {milestones.map((milestone, index) => (
+                      <motion.div
+                        key={milestone.year}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+                        className="relative pl-8 border-l-2 border-orange-500"
+                      >
+                        <div className="absolute -left-3 top-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                          {React.cloneElement(milestone.icon, { className: "w-6 h-6 text-white" })}
+                        </div>
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                          <span className="text-orange-500 font-bold">{milestone.year}</span>
+                          <h4 className="text-lg font-semibold text-gray-800 dark:text-white mt-1">
+                            {milestone.title}
+                          </h4>
+                          <p className="text-gray-600 dark:text-gray-300 mt-2">
+                            {milestone.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-            ) : (
-                <div className="grid md:grid-cols-2 gap-12 items-start">
-                  <motion.div
-                      variants={{
-                        hidden: { opacity: 0, x: -50 },
-                        visible: { opacity: 1, x: 0 }
-                      }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                      className="space-y-8"
-                  >
-                    <div className="relative aspect-square overflow-hidden rounded-2xl shadow-xl">
-                      <img
-                          src={githubInfo?.avatar_url}
-                          alt={githubInfo?.name}
-                          className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      <div className="absolute bottom-4 left-4 text-white">
-                        <h3 className="text-2xl font-bold">{githubInfo?.name}</h3>
-                        <div className="flex items-center mt-2">
-                          <MapPin className="w-4 h-4 mr-2" />
-                          <p className="text-gray-200">{githubInfo?.location}</p>
+              </motion.div>
+
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 50 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="space-y-8"
+              >
+                {githubInfo && (
+                  <>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 space-y-6">
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={githubInfo.avatar_url}
+                          alt="GitHub Avatar"
+                          className="w-16 h-16 rounded-full"
+                        />
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-800 dark:text-white">{githubInfo.name}</h3>
+                          <p className="text-gray-600 dark:text-gray-300">{githubInfo.bio}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4 text-center">
+                        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                          <div className="text-2xl font-bold text-orange-500">{githubInfo.public_repos}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">Repositories</div>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                          <div className="text-2xl font-bold text-orange-500">{githubInfo.followers}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">Followers</div>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                          <div className="text-2xl font-bold text-orange-500">{githubInfo.following}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">Following</div>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="w-5 h-5 text-orange-500" />
+                          <span className="text-gray-600 dark:text-gray-300">{githubInfo.location}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="w-5 h-5 text-orange-500" />
+                          <span className="text-gray-600 dark:text-gray-300">
+                            Joined {new Date(githubInfo.created_at).toLocaleDateString()}
+                          </span>
                         </div>
                       </div>
                     </div>
 
                     <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
-                      <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Introduction</h3>
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-                        I'm Zahar Zubik, born in 2003 in Ukraine (yes, Generation "Z"!). From my earliest days, I've been driven by curiosity, always asking "What?" and "Why?" about everything around me.
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        My journey in technology began at age 4 with my first PC encounter, sparking a lifelong passion that would shape my future career path.
-                      </p>
-                    </div>
-
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
-                      <blockquote className="text-lg italic text-gray-600 dark:text-gray-300 border-l-4 border-orange-500 pl-4">
-                        "When writing the story of your life, don't let anyone else hold the pen"
-                      </blockquote>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                      variants={{
-                        hidden: { opacity: 0, x: 50 },
-                        visible: { opacity: 1, x: 0 }
-                      }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      className="space-y-8"
-                  >
-                    <div className="space-y-6">
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">My Journey</h3>
-
-                      <div className="space-y-8">
-                        {milestones.map((milestone, index) => (
-                            <motion.div
-                                key={milestone.year}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                                className="relative pl-8 border-l-2 border-orange-500"
-                            >
-                              <div className="absolute -left-3 top-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                                {milestone.icon}
+                      <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-6">Interests & Hobbies</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {interests.map((interest, index) => (
+                          <motion.div
+                            key={interest.title}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                            transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                            className="bg-white dark:bg-gray-800 rounded-lg p-4"
+                          >
+                            <div className="flex items-center space-x-3 mb-2">
+                              <div className="bg-orange-100 dark:bg-orange-900/20 p-2 rounded-lg">
+                                {React.cloneElement(interest.icon, { className: "w-5 h-5 text-orange-500" })}
                               </div>
-                              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                                <span className="text-orange-500 font-bold">{milestone.year}</span>
-                                <h4 className="text-lg font-semibold text-gray-800 dark:text-white mt-1">
-                                  {milestone.title}
-                                </h4>
-                                <p className="text-gray-600 dark:text-gray-300 mt-2">
-                                  {milestone.description}
-                                </p>
-                              </div>
-                            </motion.div>
+                              <h4 className="font-semibold text-gray-800 dark:text-white">{interest.title}</h4>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{interest.description}</p>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
-
-                    <div className="flex flex-wrap gap-4 pt-4">
-                      <a
-                          href="#skills"
-                          className="inline-block px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-300"
-                      >
-                        My Skills
-                      </a>
-                      <a
-                          href="#projects"
-                          className="inline-block px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium rounded-lg transition-colors duration-300"
-                      >
-                        My Projects
-                      </a>
-                    </div>
-                  </motion.div>
-                </div>
-            )}
-          </motion.div>
-        </div>
-      </section>
+                  </>
+                )}
+              </motion.div>
+            </div>
+          )}
+        </motion.div>
+      </div>
+    </section>
   );
 };
 

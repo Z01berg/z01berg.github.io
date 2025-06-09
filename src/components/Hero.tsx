@@ -1,8 +1,13 @@
 import { motion } from 'framer-motion';
 import { Code, Github, Linkedin, Mail, ArrowDown, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/main';
 
 const Hero = () => {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -42,7 +47,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Zahar Zubik
+              {t.hero.title}
             </motion.h1>
 
             <motion.h2
@@ -51,7 +56,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Software Engineer & Innovation Specialist
+              {t.hero.subtitle}
             </motion.h2>
 
             <motion.div
@@ -64,20 +69,20 @@ const Hero = () => {
                   onClick={() => scrollToSection('projects')}
                   className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center"
               >
-                View My Work
+                {t.hero.viewWork}
               </button>
               <button
                   onClick={() => scrollToSection('contact')}
                   className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 backdrop-blur-sm"
               >
-                Contact Me
+                {t.hero.contactMe}
               </button>
               <Link 
                 to="/cv" 
                 className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 backdrop-blur-sm flex items-center"
               >
                 <FileText className="w-5 h-5 mr-2" />
-                View CV && Letter
+                {t.hero.viewCV}
               </Link>
             </motion.div>
 

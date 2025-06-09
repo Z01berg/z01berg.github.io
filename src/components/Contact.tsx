@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Mail, MapPin, Send, Github, Linkedin } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/main';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +19,9 @@ const Contact = () => {
     triggerOnce: true,
     threshold: 0.1
   });
+
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -64,7 +69,7 @@ const Contact = () => {
               className="max-w-6xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
-              Get in <span className="text-orange-500">Touch</span>
+              {t.contact.title}
             </h2>
 
             <div className="relative mb-12">
@@ -78,11 +83,13 @@ const Contact = () => {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
               >
-                <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Send Me a Message</h3>
+                <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+                  {t.contact.sendMessage}
+                </h3>
 
                 {submitSuccess && (
                     <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-                      <p>Message sent successfully! I'll get back to you soon.</p>
+                      <p>{t.contact.messageSent}</p>
                     </div>
                 )}
 

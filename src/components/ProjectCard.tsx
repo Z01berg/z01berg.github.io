@@ -147,8 +147,8 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           )}
 
           <div className="absolute top-3 right-3 bg-white dark:bg-gray-900 rounded-full px-3 py-1 text-xs font-medium flex items-center shadow-md z-50">
-            <Clock className="w-3 h-3 mr-1" />
-            Last commit: {project.stats?.lastCommit ? formatDate(project.stats.lastCommit) : 'N/A'}
+            <Clock className="w-3 h-3 mr-1 text-gray-700 dark:text-white" />
+            <span className="text-gray-700 dark:text-white">Last commit: {project.stats?.lastCommit ? formatDate(project.stats.lastCommit) : 'N/A'}</span>
           </div>
         </div>
 

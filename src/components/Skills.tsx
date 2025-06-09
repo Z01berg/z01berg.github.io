@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Code2, Database, Layout, Terminal, Globe, Server, Languages, Brain, Rocket, Gamepad2, Palette, Briefcase, Wrench } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/main';
 
 interface Technology {
   name: string;
@@ -131,6 +133,9 @@ const Skills = () => {
     threshold: 0.1
   });
 
+  const { language } = useLanguage();
+  const t = translations[language];
+
   return (
       <section id="skills" className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
@@ -142,8 +147,11 @@ const Skills = () => {
               className="max-w-6xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
-              Technical <span className="text-orange-500">Skills</span>
+              {t.skills.title}
             </h2>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
+              {t.skills.subtitle}
+            </p>
 
             <div className="relative mb-12">
               <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
