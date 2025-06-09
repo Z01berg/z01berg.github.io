@@ -1,31 +1,21 @@
-import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
-import Skills from './components/Skills';
 import Projects from './components/Projects';
+import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CV from './components/CV';
-import { LanguageProvider } from './contexts/LanguageContext';
-import LanguageSwitcher from './components/LanguageSwitcher';
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('bg-grid-pattern');
-    return () => {
-      document.documentElement.classList.remove('bg-grid-pattern');
-    };
-  }, []);
-
   return (
-    <LanguageProvider>
-      <ThemeProvider>
+    <ThemeProvider>
+      <LanguageProvider>
         <Router>
-          <div className="min-h-screen bg-white dark:bg-gray-900">
-            <LanguageSwitcher />
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <Header />
             <Routes>
               <Route path="/" element={
@@ -42,8 +32,8 @@ function App() {
             <Footer />
           </div>
         </Router>
-      </ThemeProvider>
-    </LanguageProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 
