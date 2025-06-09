@@ -1,9 +1,11 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import { Octokit } from '@octokit/rest';
 import { Calendar, MapPin, Code2, Gamepad, Book, School, Trophy, Rocket } from 'lucide-react';
 import CacheService from '../services/CacheService';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface GitHubInfo {
   name: string;
@@ -71,7 +73,8 @@ const milestones: Milestone[] = [
   }
 ];
 
-const About = () => {
+const About: React.FC = () => {
+  const { t } = useLanguage();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -111,130 +114,109 @@ const About = () => {
   }, []);
 
   return (
-      <section
-          id="about"
-          className="py-20 bg-white dark:bg-gray-800"
-      >
-        <div className="container mx-auto px-4">
-          <motion.div
-              ref={ref}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-6xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
-              <span className="text-orange-500">About</span> Me
-            </h2>
+    <section id="about" className="py-20 bg-white dark:bg-gray-900">
+      <div className="container mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
+          {t.about.title}
+        </h2>
+        <p className="text-xl text-center mb-16 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          {t.about.subtitle}
+        </p>
 
-            <div className="relative mb-12">
-              <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="space-y-8">
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.born.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.born.description}
+              </p>
             </div>
 
-            {loading ? (
-                <div className="flex justify-center items-center min-h-[400px]">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
-                </div>
-            ) : (
-                <div className="grid md:grid-cols-2 gap-12 items-start">
-                  <motion.div
-                      variants={{
-                        hidden: { opacity: 0, x: -50 },
-                        visible: { opacity: 1, x: 0 }
-                      }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                      className="space-y-8"
-                  >
-                    <div className="relative aspect-square overflow-hidden rounded-2xl shadow-xl">
-                      <img
-                          src={githubInfo?.avatar_url}
-                          alt={githubInfo?.name}
-                          className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      <div className="absolute bottom-4 left-4 text-white">
-                        <h3 className="text-2xl font-bold">{githubInfo?.name}</h3>
-                        <div className="flex items-center mt-2">
-                          <MapPin className="w-4 h-4 mr-2" />
-                          <p className="text-gray-200">{githubInfo?.location}</p>
-                        </div>
-                      </div>
-                    </div>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.firstPC.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.firstPC.description}
+              </p>
+            </div>
 
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
-                      <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Introduction</h3>
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-                        I'm Zahar Zubik, born in 2003 in Ukraine (yes, Generation "Z"!). From my earliest days, I've been driven by curiosity, always asking "What?" and "Why?" about everything around me.
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        My journey in technology began at age 4 with my first PC encounter, sparking a lifelong passion that would shape my future career path.
-                      </p>
-                    </div>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.earlyReading.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.earlyReading.description}
+              </p>
+            </div>
 
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
-                      <blockquote className="text-lg italic text-gray-600 dark:text-gray-300 border-l-4 border-orange-500 pl-4">
-                        "When writing the story of your life, don't let anyone else hold the pen"
-                      </blockquote>
-                    </div>
-                  </motion.div>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.gaming.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.gaming.description}
+              </p>
+            </div>
+          </div>
 
-                  <motion.div
-                      variants={{
-                        hidden: { opacity: 0, x: 50 },
-                        visible: { opacity: 1, x: 0 }
-                      }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      className="space-y-8"
-                  >
-                    <div className="space-y-6">
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">My Journey</h3>
+          <div className="space-y-8">
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.programming.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.programming.description}
+              </p>
+            </div>
 
-                      <div className="space-y-8">
-                        {milestones.map((milestone, index) => (
-                            <motion.div
-                                key={milestone.year}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                                className="relative pl-8 border-l-2 border-orange-500"
-                            >
-                              <div className="absolute -left-3 top-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                                {milestone.icon}
-                              </div>
-                              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                                <span className="text-orange-500 font-bold">{milestone.year}</span>
-                                <h4 className="text-lg font-semibold text-gray-800 dark:text-white mt-1">
-                                  {milestone.title}
-                                </h4>
-                                <p className="text-gray-600 dark:text-gray-300 mt-2">
-                                  {milestone.description}
-                                </p>
-                              </div>
-                            </motion.div>
-                        ))}
-                      </div>
-                    </div>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.academic.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.academic.description}
+              </p>
+            </div>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                      <a
-                          href="#skills"
-                          className="inline-block px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-300"
-                      >
-                        My Skills
-                      </a>
-                      <a
-                          href="#projects"
-                          className="inline-block px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium rounded-lg transition-colors duration-300"
-                      >
-                        My Projects
-                      </a>
-                    </div>
-                  </motion.div>
-                </div>
-            )}
-          </motion.div>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.moving.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.moving.description}
+              </p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t.about.milestones.university.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                {t.about.milestones.university.description}
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
+
+        <div className="flex justify-center mt-16 space-x-4">
+          <a
+            href="#skills"
+            className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            {t.about.mySkills}
+          </a>
+          <a
+            href="#projects"
+            className="px-8 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            {t.about.myProjects}
+          </a>
+        </div>
+      </div>
+    </section>
   );
 };
 

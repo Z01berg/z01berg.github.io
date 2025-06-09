@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Moon, Sun, Github, Code2, FileText, Languages } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header: React.FC = () => {
+  const { language, setLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +48,7 @@ const Header = () => {
             transition={{ duration: 0.5 }}
           >
             <Code2 className="w-8 h-8 mr-2 text-orange-500" />
-            <span className="text-orange-500">Dev</span>Portfolio
+            <span className="text-orange-500">{t.hero.title}</span>
           </motion.button>
 
           {/* Desktop Navigation */}
@@ -58,28 +58,28 @@ const Header = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <button onClick={() => scrollToSection('about')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">About</button>
+              <button onClick={() => scrollToSection('about')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">{t.about.title}</button>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <button onClick={() => scrollToSection('projects')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Projects</button>
+              <button onClick={() => scrollToSection('projects')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">{t.projects.title}</button>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <button onClick={() => scrollToSection('skills')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Skills</button>
+              <button onClick={() => scrollToSection('skills')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">{t.skills.title}</button>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <button onClick={() => scrollToSection('contact')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">Contact</button>
+              <button onClick={() => scrollToSection('contact')} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition">{t.contact.title}</button>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -105,7 +105,7 @@ const Header = () => {
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                English
+                EN
               </button>
               <button
                 onClick={() => setLanguage('uk')}
@@ -115,7 +115,7 @@ const Header = () => {
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                Українська
+                UA
               </button>
               <button
                 onClick={() => setLanguage('pl')}
@@ -125,7 +125,7 @@ const Header = () => {
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                Polski
+                PL
               </button>
             </motion.div>
             <motion.button 
@@ -200,25 +200,25 @@ const Header = () => {
               onClick={() => scrollToSection('about')}
               className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
-              About
+              {t.about.title}
             </button>
             <button 
               onClick={() => scrollToSection('projects')}
               className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
-              Projects
+              {t.projects.title}
             </button>
             <button 
               onClick={() => scrollToSection('skills')}
               className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
-              Skills
+              {t.skills.title}
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
               className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 py-2 transition text-left"
             >
-              Contact
+              {t.contact.title}
             </button>
             <Link 
               to="/cv" 
