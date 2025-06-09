@@ -190,7 +190,7 @@ const Projects = () => {
                   rel="noopener noreferrer"
                   className="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
                 >
-                  <Github className="w-5 h-5 mr-2" /> GitHub Profile
+                  <Github className="w-5 h-5 mr-2 text-white" /> GitHub Profile
                 </a>
 
                 <button
@@ -198,13 +198,13 @@ const Projects = () => {
                   disabled={loading || cooldownUntil > Date.now()}
                   className="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
                 >
-                  <RefreshCw className={`w-5 h-5 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-5 h-5 mr-2 text-gray-800 dark:text-white ${loading ? 'animate-spin' : ''}`} />
                   Refresh
                 </button>
               </div>
               {lastFetchTime && (
-                <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
+                <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                  <Clock className="w-4 h-4 mr-1 text-gray-600 dark:text-gray-300" />
                   Last updated: {lastFetchTime}
                 </div>
               )}

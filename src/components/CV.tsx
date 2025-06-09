@@ -647,7 +647,8 @@ const CV = () => {
           nav, 
           button,
           .navigation,
-          .print\\:hidden {
+          .print\\:hidden,
+          footer {
             display: none !important;
           }
 
@@ -663,6 +664,13 @@ const CV = () => {
           @page {
             margin: 0;
             size: A4;
+          }
+
+          /* Ensure content fills the page */
+          .container {
+            max-width: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
         }
       `}</style>
