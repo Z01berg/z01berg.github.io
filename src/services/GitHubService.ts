@@ -107,10 +107,14 @@ class GitHubService {
         console.warn('GitHub API rate limit exceeded or unauthorized. Please check your token configuration.');
         return null;
       }
-      if (error.response?.status === 404 || error.response?.status === 409) {
+      if (error.response?.status === 404) {
+        // Silently return null for 404s as they're expected for missing directories
         return null;
       }
-      console.error('GitHub API error:', error);
+      if (error.response?.status === 409) {
+        return null;
+      }
+      console.warn('GitHub API warning:', error.message);
       return null;
     }
   }
@@ -144,7 +148,7 @@ class GitHubService {
       'src/assets/images'
     ];
 
-    const imageExtensions = ['.png', '.jpg', '.jpeg', '.gif'];
+    const imageExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
     const images: string[] = [];
 
     try {
@@ -162,16 +166,25 @@ class GitHubService {
         }
       }
 
+      // If no images found, use fallback images
+      if (images.length === 0) {
+        return this.getFallbackImages(repo);
+      }
+
       return images;
     } catch (error) {
-      console.warn(`Error fetching images for ${repo}:`, error);
-      return [];
+      console.warn(`Warning: Could not fetch images for ${repo}, using fallback images`);
+      return this.getFallbackImages(repo);
     }
   }
 
-  private getFallbackImages(language: string): string[] {
-    const normalizedLang = language?.toLowerCase() || 'default';
-    return this.fallbackImages[normalizedLang] || this.fallbackImages.default;
+  private getFallbackImages(repo: string): string[] {
+    // Use a more reliable fallback image source
+    return [
+      'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg',
+      'https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg',
+      'https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg'
+    ];
   }
 
   private async getReadme(repo: string): Promise<string | null> {
@@ -270,7 +283,7 @@ class GitHubService {
 
         const imageUrls = repoImages.length > 0
             ? repoImages
-            : this.getFallbackImages(repo.language);
+            : this.getFallbackImages(repo.name);
 
         // Get all possible tags
         const allTags = new Set<string>();

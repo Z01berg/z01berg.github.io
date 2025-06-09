@@ -9,6 +9,8 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CV from './components/CV';
+import { LanguageProvider } from './contexts/LanguageContext';
+import LanguageSwitcher from './components/LanguageSwitcher';
 
 function App() {
   useEffect(() => {
@@ -19,26 +21,29 @@ function App() {
   }, []);
 
   return (
-      <Router>
-        <ThemeProvider>
-          <Routes>
-            <Route path="/cv" element={<CV />} />
-            <Route path="/" element={
-              <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-                <Header />
-                <main>
+    <LanguageProvider>
+      <ThemeProvider>
+        <Router>
+          <div className="min-h-screen bg-white dark:bg-gray-900">
+            <LanguageSwitcher />
+            <Header />
+            <Routes>
+              <Route path="/" element={
+                <>
                   <Hero />
                   <About />
                   <Skills />
                   <Projects />
                   <Contact />
-                </main>
-                <Footer />
-              </div>
-            } />
-          </Routes>
-        </ThemeProvider>
-      </Router>
+                </>
+              } />
+              <Route path="/cv" element={<CV />} />
+            </Routes>
+            <Footer />
+          </div>
+        </Router>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
 

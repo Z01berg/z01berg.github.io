@@ -15,7 +15,7 @@ const Hero = () => {
           id="hero"
           className="min-h-screen pt-16 flex items-center relative overflow-hidden"
           style={{
-            backgroundImage: 'url(../../img/hero-bg.jpg)',
+            backgroundImage: 'url(/img/hero-bg.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

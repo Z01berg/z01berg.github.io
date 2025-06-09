@@ -33,10 +33,11 @@ interface Translation {
         };
         education: {
             title: string;
-            school: string;
+            degree: string;
+            field: string;
+            university: string;
             period: string;
-            location: string;
-            details: string[];
+            achievements: string[];
         };
         skills: {
             title: string;
@@ -59,11 +60,12 @@ interface Translation {
 interface Translations {
     en: Translation;
     pl: Translation;
+    uk: Translation;
 }
 
 const CV = () => {
     const [activeTab, setActiveTab] = useState<'cv' | 'promotion'>('cv');
-    const [language, setLanguage] = useState<'en' | 'pl'>('en');
+    const [language, setLanguage] = useState<'en' | 'pl' | 'uk'>('en');
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
     useEffect(() => {
@@ -122,13 +124,16 @@ const CV = () => {
                     additional: "Additional projects available upon request, showcasing expertise in various technologies and development methodologies."
                 },
                 education: {
-                    title: "Bachelor of Computer Science",
-                    school: "Polish-Japanese Academy of Information Technology",
-                    period: "2021 - Present",
-                    location: "Warsaw, Poland",
-                    details: [
-                        "Focus on Software Engineering and Game Development",
-                        "Active participation in programming competitions and hackathons"
+                    title: "EDUCATION",
+                    degree: "Bachelor of Engineering",
+                    field: "Computer Science",
+                    university: "University of Technology",
+                    period: "2020 - 2024",
+                    achievements: [
+                        "Specialized in Software Engineering and Artificial Intelligence",
+                        "Maintained a GPA of 4.5/5.0",
+                        "Participated in multiple hackathons and coding competitions",
+                        "Completed advanced courses in Machine Learning and Data Structures"
                     ]
                 },
                 skills: {
@@ -188,13 +193,16 @@ const CV = () => {
                     additional: "Dodatkowe projekty dostępne na życzenie, prezentujące doświadczenie w różnych technologiach i metodologiach rozwoju."
                 },
                 education: {
-                    title: "Informatyka",
-                    school: "Polsko-Japońska Akademia Technik Komputerowych",
+                    title: "EDUKACJA",
+                    degree: "Inżynier",
+                    field: "Informatyka",
+                    university: "Polsko-Japońska Akademia Technik Komputerowych",
                     period: "2021 - Obecnie",
-                    location: "Warszawa, Polska",
-                    details: [
+                    achievements: [
                         "Specjalizacja w Inżynierii Oprogramowania i Rozwoju Gier",
-                        "Aktywny udział w konkursach programistycznych i hackathonach"
+                        "Aktywny udział w konkursach programistycznych i hackathonach",
+                        "Ukończenie zaawansowanych kursów z Machine Learning i Struktur Danych",
+                        "Utrzymanie średniej ocen 4.5/5.0"
                     ]
                 },
                 skills: {
@@ -210,6 +218,75 @@ const CV = () => {
                         interests3: "Aktywnie śledzę nowe technologie, ponieważ każdy postęp widzę jako okazję do odkrycia nowego, niezbadanego świata z własnymi zasadami i specyfikacjami. Dlatego wybrałem studia informatyczne—oferują szeroki zakres wiedzy i ekspozycję na różne technologie. Moim długoterminowym celem jest tworzenie innowacyjnych projektów, które integrują różne technologie w sposób, który nigdy wcześniej nie był eksplorowany.",
                         internship1: "Ten staż stanowi cenną okazję do samorozwoju i zdobycia praktycznego doświadczenia w dziedzinie, która najbardziej mnie pasjonuje. Jestem chętny do poszerzania swoich umiejętności w zakresie tworzenia gier, projektowania aplikacji i zarządzania projektami, robiąc kroki w kierunku mojego długoterminowego celu, jakim jest zostanie Senior Developerem, a w przyszłości przedsiębiorcą w branży gier.",
                         internship2: "Szczególnie cieszę się perspektywą współpracy przy rzeczywistych projektach i współpracy z profesjonalistami, którzy dzielą moje entuzjazm dla innowacji. To doświadczenie idealnie wpisuje się w moje aspiracje do projektowania aplikacji i stron internetowych, które przekraczają granice i wprowadzają świeże, niekonwencjonalne pomysły do branży. Pracując nad różnorodnymi projektami, mam nadzieję zdobyć wgląd w zaawansowane praktyki rozwojowe i udoskonalić moją zdolność do tworzenia aplikacji, które płynnie łączą różne technologie w przełomowy sposób."
+                    }
+                }
+            }
+        },
+        uk: {
+            cv: {
+                title: "Резюме",
+                back: "Повернутися до Портфоліо",
+                download: "Завантажити",
+                header: {
+                    role: "Full Stack Developer & Game Developer"
+                },
+                sections: {
+                    workExperience: "ДОСВІД РОБОТИ",
+                    projects: "КЛЮЧОВІ ПРОЕКТИ",
+                    education: "ОСВІТА",
+                    skills: "ТЕХНІЧНІ НАВИЧКИ"
+                },
+                workExperience: {
+                    title: "Front-end Developer Intern",
+                    company: "Silk Software House",
+                    period: "Березень 2023 - Червень 2023",
+                    location: "Варшава, Польща",
+                    responsibilities: [
+                        "Розробка та покращення front-end додатків, включаючи складну графічну симуляцію Parent-Child inheritance в React з використанням сучасних хуків, покращуючи підтримку коду та користувацький досвід.",
+                        "Успішна міграція проекту React.js на TypeScript, впровадження комплексних заходів безпеки типів та покращення надійності коду при збереженні повної функціональності.",
+                        "Розробка інтерактивної гри Tic-Tac-Toe з модульними компонентами header та footer за допомогою React та власних хуків, демонструючи сильні навички архітектури компонентів."
+                    ]
+                },
+                projects: {
+                    title: "\"Card Your Time\" - Покрокова Рогалик Карткова Гра",
+                    role: "Lead Developer & Project Manager",
+                    period: "Вересень 2023 - 2024",
+                    achievements: [
+                        "Архітектура та впровадження передової системи процедурної генерації підземелля, створюючи динамічні та захоплюючі ігрові середовища.",
+                        "Проектування та розробка надійної покрокової системи геймплею, включаючи сучасні патерни дизайну ігор та ефективне управління станом.",
+                        "Проведення міжфункціональних командних зустрічей, забезпечуючи чітку комунікацію та узгодженість цілей проекту.",
+                        "Впровадження методологій гнучкого управління проектами, оптимізуючи продуктивність команди та дотримання графіку.",
+                        "Встановлення комплексних процесів забезпечення якості, значно зменшуючи кількість помилок та покращуючи загальну стабільність гри.",
+                        "Створення детальної технічної документації та рекомендацій щодо розвитку, полегшуючи плавну співпрацю команди та передачу знань."
+                    ],
+                    additional: "Додаткові проекти доступні за запитом, демонструючи досвід у різних технологіях та методологіях розробки."
+                },
+                education: {
+                    title: "ОСВІТА",
+                    degree: "Бакалавр інженерії",
+                    field: "Комп'ютерні науки",
+                    university: "Технічний університет",
+                    period: "2020 - 2024",
+                    achievements: [
+                        "Спеціалізація в Програмній інженерії та Штучному інтелекті",
+                        "Підтримка GPA 4.5/5.0",
+                        "Участь у численних хакатонах та змаганнях з програмування",
+                        "Завершення розширених курсів з Машинного навчання та Структур даних"
+                    ]
+                },
+                skills: {
+                    title: "ТЕХНІЧНІ НАВИЧКИ"
+                },
+                promotion: {
+                    title: "Супровідний лист",
+                    interests: "Професійні інтереси та кар'єрні цілі",
+                    whyInternship: "Чому ви хочете приєднатися до цього стажування?",
+                    content: {
+                        interests1: "Мене завжди цікавило, як працюють різні речі—механізми, що стоять за кожним процесом та інновацією. Коли я вперше зіткнувся з комп'ютером, я хотів зрозуміти його внутрішню роботу та навчитися створювати технології самостійно. Цікавість швидко переросла в пристрасть, яка рухає моїм постійним розвитком у сфері комп'ютерних наук.",
+                        interests2: "Мій інтерес до ігор ще більше посилив цю амбіцію, оскільки я не тільки люблю грати, але й мрію створювати власні ігри. Врешті-решт, моя мета—стати Game Developer'ом та заснувати власну компанію з розробки ігор. Однак перед цим я планую отримати широкий досвід у галузі та просунутися до ролі Senior Developer'а, оволодіваючи необхідними технічними та лідерськими навичками. Крім того, я зацікавлений у розширенні своїх знань у сфері Управління проектами та Розробки додатків/веб-сайтів, оскільки вважаю, що розуміння багатьох аспектів технологій дозволить мені створювати більш інноваційні та цінні проекти.",
+                        interests3: "Я активно відстежую нові технології, оскільки кожен прогрес бачу як можливість відкрити новий, недосліджений світ зі своїми правилами та специфікаціями. Тому я обрав навчання комп'ютерним наукам—воно пропонує широкий спектр знань та експозицію до різних технологій. Моя довгострокова мета—створювати інноваційні проекти, які інтегрують різні технології способами, які ніколи раніше не досліджувались.",
+                        internship1: "Це стажування є цінною можливістю для саморозвитку та отримання практичного досвіду в сфері, яка мене найбільше цікавить. Я готовий розширювати свої навички в розробці ігор, проектуванні додатків та управлінні проектами, роблячи кроки до своєї довгострокової мети стати Senior Developer'ом, а в майбутньому—підприємцем в ігровій індустрії.",
+                        internship2: "Я особливо радію перспективі співпраці над реальними проектами та роботи з професіоналами, які розділяють мій ентузіазм щодо інновацій. Цей досвід ідеально відповідає моїм прагненням проектувати додатки та веб-сайти, які перетинають межі та впроваджують свіжі, неконвенційні ідеї в галузь. Працюючи над різноманітними проектами, я сподіваюся отримати уявлення про передові практики розробки та вдосконалити свою здатність створювати додатки, які плавно поєднують різні технології революційними способами."
                     }
                 }
             }
@@ -259,6 +336,17 @@ const CV = () => {
                             >
                                 <Languages className="w-5 h-5 inline-block mr-2" />
                                 PL
+                            </button>
+                            <button
+                                onClick={() => setLanguage('uk')}
+                                className={`px-4 py-2 rounded-lg transition-colors ${
+                                    language === 'uk'
+                                        ? 'bg-orange-500 text-white'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white'
+                                }`}
+                            >
+                                <Languages className="w-5 h-5 inline-block mr-2" />
+                                UK
                             </button>
                         </div>
                         <div className="flex space-x-2">
@@ -403,10 +491,10 @@ const CV = () => {
                                             <div className="absolute -left-2 top-0 w-3 h-3 bg-orange-500 rounded-full"></div>
                                             <div>
                                                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{t.cv.education.title}</h3>
-                                                <p className="text-orange-500 font-medium text-sm">{t.cv.education.school} • {t.cv.education.period}</p>
-                                                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{t.cv.education.location}</p>
+                                                <p className="text-orange-500 font-medium text-sm">{t.cv.education.degree} • {t.cv.education.field} • {t.cv.education.university}</p>
+                                                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{t.cv.education.period}</p>
                                                 <ul className="mt-2 space-y-1 text-gray-600 dark:text-gray-300 text-sm">
-                                                    {t.cv.education.details.map((item, index) => (
+                                                    {t.cv.education.achievements.map((item, index) => (
                                                         <li key={index} className="flex items-start">
                                                             <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mr-2 mt-1.5"></span>
                                                             {item}

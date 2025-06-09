@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
         }
       }
     },
+    publicDir: 'public',
     base: '/',
     define: {
       'import.meta.env.VITE_HUB_TOKEN': JSON.stringify(env.VITE_HUB_TOKEN),

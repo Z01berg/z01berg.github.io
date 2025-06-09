@@ -32,6 +32,9 @@ const Projects = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'latest' | 'earliest'>('latest');
   const [lastFetchTime, setLastFetchTime] = useState<string | null>(null);
+  const [reloadCount, setReloadCount] = useState(0);
+  const [lastReloadTime, setLastReloadTime] = useState<number>(0);
+  const [cooldownUntil, setCooldownUntil] = useState<number>(0);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -39,6 +42,29 @@ const Projects = () => {
   });
 
   const fetchProjects = async (forceRefresh = false) => {
+    const now = Date.now();
+    
+    // Check if we're in cooldown
+    if (now < cooldownUntil) {
+      const hoursLeft = Math.ceil((cooldownUntil - now) / (1000 * 60 * 60));
+      setError(`Rate limit exceeded. Please try again in ${hoursLeft} hours.`);
+      return;
+    }
+
+    // Check for rapid reloads
+    if (now - lastReloadTime < 15 * 60 * 1000) { // 15 minutes
+      setReloadCount(prev => prev + 1);
+      if (reloadCount >= 1) { // Already reloaded once in last 15 minutes
+        const cooldownTime = now + (12 * 60 * 60 * 1000); // 12 hours
+        setCooldownUntil(cooldownTime);
+        setError('Too many reloads. Please try again in 12 hours.');
+        return;
+      }
+    } else {
+      setReloadCount(0);
+    }
+
+    setLastReloadTime(now);
     setLoading(true);
     setError(null);
     setProjects([]);
@@ -133,11 +159,12 @@ const Projects = () => {
           transition={{ duration: 0.6 }}
           className="max-w-6xl mx-auto"
         >
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 space-y-4 md:space-y-0">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex-1"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
                 My <span className="text-orange-500">Projects</span>
@@ -154,7 +181,7 @@ const Projects = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col items-end space-y-2 mt-4 md:mt-0"
+              className="flex flex-col items-end space-y-2"
             >
               <div className="flex space-x-4">
                 <a
@@ -168,7 +195,7 @@ const Projects = () => {
 
                 <button
                   onClick={() => fetchProjects(true)}
-                  disabled={loading}
+                  disabled={loading || cooldownUntil > Date.now()}
                   className="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
                 >
                   <RefreshCw className={`w-5 h-5 mr-2 ${loading ? 'animate-spin' : ''}`} />
@@ -179,6 +206,11 @@ const Projects = () => {
                 <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                   <Clock className="w-4 h-4 mr-1" />
                   Last updated: {lastFetchTime}
+                </div>
+              )}
+              {cooldownUntil > Date.now() && (
+                <div className="text-sm text-red-500 dark:text-red-400">
+                  Cooldown active. Try again in {Math.ceil((cooldownUntil - Date.now()) / (1000 * 60 * 60))} hours.
                 </div>
               )}
             </motion.div>
