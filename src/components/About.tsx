@@ -32,80 +32,6 @@ interface Interest {
   icon: JSX.Element;
 }
 
-const milestones: Milestone[] = [
-  {
-    year: '2003',
-    title: 'Born in Ukraine',
-    description: 'Born in a small village near Dolina, Ivano-Frankivsk region. From the start, I was always curious about how things work.',
-    icon: <Calendar className="w-6 h-6" />
-  },
-  {
-    year: '2007',
-    title: 'First PC Experience',
-    description: 'First encounter with a PC at age 4. Fell in love with computing through games like "Purble Crying" & "Bugs Bunny: Lost in Time".',
-    icon: <Code2 className="w-6 h-6" />
-  },
-  {
-    year: '2008',
-    title: 'Early Reading',
-    description: 'Developed a passion for reading at age 5, able to read up to 15 tales per day. This marked my first serious hobby.',
-    icon: <Book className="w-6 h-6" />
-  },
-  {
-    year: '2010',
-    title: 'Gaming Journey',
-    description: 'Received my first Game Boy Advance SP, introducing me to English and the Mario franchise. Later discovered anime through Jetix and QTV.',
-    icon: <Gamepad className="w-6 h-6" />
-  },
-  {
-    year: '2013',
-    title: 'Programming Begins',
-    description: 'Started learning Pascal at age 10, inspired by Hideo Kojima. Began dreaming of creating video games and working in the industry.',
-    icon: <Code2 className="w-6 h-6" />
-  },
-  {
-    year: '2016-2017',
-    title: 'Academic Excellence',
-    description: 'Participated in IT Olympiads, achieving second place in city competitions and advancing to regional levels.',
-    icon: <Trophy className="w-6 h-6" />
-  },
-  {
-    year: '2018',
-    title: 'Moving to Poland',
-    description: 'Successfully enrolled in a Polish school with Ukrainian minority, marking a significant step towards international education.',
-    icon: <School className="w-6 h-6" />
-  },
-  {
-    year: '2021',
-    title: 'University Journey',
-    description: 'Chose PJATK (Polish-Japanese Academy of Information Technology), aligning with my passion for Japanese culture and technology.',
-    icon: <Rocket className="w-6 h-6" />
-  }
-];
-
-const interests: Interest[] = [
-  {
-    title: 'Game Development',
-    description: 'Passionate about creating immersive gaming experiences, combining technical skills with creative storytelling.',
-    icon: <Gamepad2 className="w-6 h-6" />
-  },
-  {
-    title: 'Japanese Culture',
-    description: 'Deeply interested in Japanese culture, language, and technology. Currently studying Japanese (N4 level).',
-    icon: <Globe className="w-6 h-6" />
-  },
-  {
-    title: 'Digital Art',
-    description: 'Enjoy creating digital art and pixel art, using tools like Aseprite and Blender for game assets.',
-    icon: <Palette className="w-6 h-6" />
-  },
-  {
-    title: 'Music',
-    description: 'Love exploring different music genres, especially video game soundtracks and Japanese music.',
-    icon: <Music className="w-6 h-6" />
-  }
-];
-
 const About = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -117,6 +43,80 @@ const About = () => {
   const [githubInfo, setGithubInfo] = useState<GitHubInfo | null>(null);
   const { language } = useLanguage();
   const t = translations[language];
+
+  const milestones: Milestone[] = [
+    {
+      year: '2003',
+      title: t.about.milestones.born.title,
+      description: t.about.milestones.born.description,
+      icon: <Calendar className="w-6 h-6" />
+    },
+    {
+      year: '2007',
+      title: t.about.milestones.firstPC.title,
+      description: t.about.milestones.firstPC.description,
+      icon: <Code2 className="w-6 h-6" />
+    },
+    {
+      year: '2008',
+      title: t.about.milestones.earlyReading.title,
+      description: t.about.milestones.earlyReading.description,
+      icon: <Book className="w-6 h-6" />
+    },
+    {
+      year: '2010',
+      title: t.about.milestones.gaming.title,
+      description: t.about.milestones.gaming.description,
+      icon: <Gamepad className="w-6 h-6" />
+    },
+    {
+      year: '2013',
+      title: t.about.milestones.programming.title,
+      description: t.about.milestones.programming.description,
+      icon: <Code2 className="w-6 h-6" />
+    },
+    {
+      year: '2016-2017',
+      title: t.about.milestones.academic.title,
+      description: t.about.milestones.academic.description,
+      icon: <Trophy className="w-6 h-6" />
+    },
+    {
+      year: '2018',
+      title: t.about.milestones.moving.title,
+      description: t.about.milestones.moving.description,
+      icon: <School className="w-6 h-6" />
+    },
+    {
+      year: '2021',
+      title: t.about.milestones.university.title,
+      description: t.about.milestones.university.description,
+      icon: <Rocket className="w-6 h-6" />
+    }
+  ];
+
+  const interests: Interest[] = [
+    {
+      title: t.about.interests.gameDev.title,
+      description: t.about.interests.gameDev.description,
+      icon: <Gamepad2 className="w-6 h-6" />
+    },
+    {
+      title: t.about.interests.japanese.title,
+      description: t.about.interests.japanese.description,
+      icon: <Globe className="w-6 h-6" />
+    },
+    {
+      title: t.about.interests.digitalArt.title,
+      description: t.about.interests.digitalArt.description,
+      icon: <Palette className="w-6 h-6" />
+    },
+    {
+      title: t.about.interests.music.title,
+      description: t.about.interests.music.description,
+      icon: <Music className="w-6 h-6" />
+    }
+  ];
 
   useEffect(() => {
     const fetchGitHubInfo = async () => {
