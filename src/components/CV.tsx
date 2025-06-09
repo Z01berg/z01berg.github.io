@@ -324,7 +324,7 @@ const CV = () => {
                                 }`}
                             >
                                 <Languages className="w-5 h-5 inline-block mr-2" />
-                                English
+                                EN
                             </button>
                             <button
                                 onClick={() => setLanguage('pl')}
@@ -335,7 +335,7 @@ const CV = () => {
                                 }`}
                             >
                                 <Languages className="w-5 h-5 inline-block mr-2" />
-                                Polski
+                                PL
                             </button>
                             <button
                                 onClick={() => setLanguage('uk')}
@@ -346,7 +346,7 @@ const CV = () => {
                                 }`}
                             >
                                 <Languages className="w-5 h-5 inline-block mr-2" />
-                                Українська
+                                UA
                             </button>
                         </div>
                         <div className="flex space-x-2">

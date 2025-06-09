@@ -5,7 +5,6 @@ import ProjectCard from './ProjectCard';
 import { Github, RefreshCw, Clock, ArrowUpDown } from 'lucide-react';
 import ProjectService, { Project } from '../services/ProjectService';
 import CacheService from '../services/CacheService';
-import { useLanguage } from '../contexts/LanguageContext';
 
 // Define available tags with categories
 const AVAILABLE_TAGS = {
@@ -27,16 +26,15 @@ const AVAILABLE_TAGS = {
 };
 
 const Projects = () => {
-  const { t } = useLanguage();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'latest' | 'earliest'>('latest');
-  const [lastFetchTime, setLastFetchTime] = useState<string>('');
+  const [lastFetchTime, setLastFetchTime] = useState<string | null>(null);
   const [reloadCount, setReloadCount] = useState(0);
   const [lastReloadTime, setLastReloadTime] = useState<number>(0);
-  const [cooldown, setCooldown] = useState<number>(0);
+  const [cooldownUntil, setCooldownUntil] = useState<number>(0);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -47,8 +45,8 @@ const Projects = () => {
     const now = Date.now();
     
     // Check if we're in cooldown
-    if (now < cooldown) {
-      const hoursLeft = Math.ceil((cooldown - now) / (1000 * 60 * 60));
+    if (now < cooldownUntil) {
+      const hoursLeft = Math.ceil((cooldownUntil - now) / (1000 * 60 * 60));
       setError(`Rate limit exceeded. Please try again in ${hoursLeft} hours.`);
       return;
     }
@@ -58,7 +56,7 @@ const Projects = () => {
       setReloadCount(prev => prev + 1);
       if (reloadCount >= 1) { // Already reloaded once in last 15 minutes
         const cooldownTime = now + (12 * 60 * 60 * 1000); // 12 hours
-        setCooldown(cooldownTime);
+        setCooldownUntil(cooldownTime);
         setError('Too many reloads. Please try again in 12 hours.');
         return;
       }
@@ -152,50 +150,70 @@ const Projects = () => {
     });
 
   return (
-    <section id="projects" className="py-20 bg-white dark:bg-gray-900">
+    <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-          {t.projects.title}
-        </h2>
-        <p className="text-xl text-center mb-16 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          {t.projects.subtitle}
-        </p>
-
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <div className="relative z-0">
-              <p className="text-sm text-gray-600 dark:text-gray-100">
-                {t.projects.lastUpdated} {lastFetchTime}
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-6xl mx-auto"
+        >
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 space-y-4 md:space-y-0">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex-1"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                My <span className="text-orange-500">Projects</span>
+              </h2>
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
+                A collection of my work and contributions
               </p>
-              {cooldown > 0 && (
-                <p className="text-sm text-gray-600 dark:text-gray-100">
-                  {t.projects.cooldown} {cooldown}s
-                </p>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 italic">
+                Note: Tags are based on README analysis and difficulty rating is calculated automatically based on technologies used, project complexity, and activity metrics.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col items-end space-y-2"
+            >
+              <div className="flex space-x-4">
+                <a
+                  href="https://github.com/Z01berg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+                >
+                  <Github className="w-5 h-5 mr-2 text-white" /> GitHub Profile
+                </a>
+
+                <button
+                  onClick={() => fetchProjects(true)}
+                  disabled={loading || cooldownUntil > Date.now()}
+                  className="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-5 h-5 mr-2 text-gray-800 dark:text-white ${loading ? 'animate-spin' : ''}`} />
+                  Refresh
+                </button>
+              </div>
+              {lastFetchTime && (
+                <div className="text-sm text-gray-700 dark:text-white flex items-center relative z-10">
+                  <Clock className="w-4 h-4 mr-1 text-gray-700 dark:text-white" />
+                  Last updated: {lastFetchTime}
+                </div>
               )}
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600 dark:text-gray-300">{t.projects.sortBy}:</span>
-              <button
-                onClick={() => setSortOrder('latest')}
-                className={`px-4 py-2 rounded-lg ${
-                  sortOrder === 'latest'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white'
-                }`}
-              >
-                {t.projects.latest}
-              </button>
-              <button
-                onClick={() => setSortOrder('earliest')}
-                className={`px-4 py-2 rounded-lg ${
-                  sortOrder === 'earliest'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white'
-                }`}
-              >
-                {t.projects.earliest}
-              </button>
-            </div>
+              {cooldownUntil > Date.now() && (
+                <div className="text-sm text-red-500 dark:text-red-400">
+                  Cooldown active. Try again in {Math.ceil((cooldownUntil - Date.now()) / (1000 * 60 * 60))} hours.
+                </div>
+              )}
+            </motion.div>
           </div>
 
           {error && (
@@ -230,6 +248,18 @@ const Projects = () => {
             ))}
           </div>
 
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setSortOrder(sortOrder === 'latest' ? 'earliest' : 'latest')}
+                className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+              >
+                <ArrowUpDown className="w-4 h-4" />
+                <span>Sort by {sortOrder === 'latest' ? 'Latest' : 'Earliest'}</span>
+              </button>
+            </div>
+          </div>
+
           {loading ? (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
@@ -243,18 +273,7 @@ const Projects = () => {
               ))}
             </div>
           )}
-
-          <div className="text-center mt-12">
-            <a
-              href="https://github.com/yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              {t.projects.viewAll}
-            </a>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

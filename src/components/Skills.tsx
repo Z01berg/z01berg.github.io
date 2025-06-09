@@ -1,8 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Code2, Database, Layout, Terminal, Globe, Server, Languages, Brain, Rocket, Gamepad2, Palette, Briefcase, Wrench } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 interface Technology {
   name: string;
@@ -127,152 +125,105 @@ const SkillSection = ({ title, icon, technologies }: { title: string; icon: JSX.
   );
 };
 
-const Skills: React.FC = () => {
-  const { t } = useLanguage();
+const Skills = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   });
 
   return (
-    <section id="skills" className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-          {t.skills.title}
-        </h2>
-        <p className="text-xl text-center mb-16 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          {t.skills.subtitle}
-        </p>
+      <section id="skills" className="py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <motion.div
+              ref={ref}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-6xl mx-auto"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+              Technical <span className="text-orange-500">Skills</span>
+            </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.frontend}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>HTML5 & CSS3</li>
-              <li>JavaScript (ES6+)</li>
-              <li>TypeScript</li>
-              <li>React</li>
-              <li>Next.js</li>
-              <li>Tailwind CSS</li>
-            </ul>
-          </div>
+            <div className="relative mb-12">
+              <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
+            </div>
 
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.backend}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Node.js</li>
-              <li>Express</li>
-              <li>Python</li>
-              <li>Django</li>
-              <li>REST APIs</li>
-              <li>GraphQL</li>
-            </ul>
-          </div>
+            <div className="grid md:grid-cols-2 gap-6 mb-12">
+              <SkillSection
+                  title="Frontend Development"
+                  icon={<Globe className="w-6 h-6" />}
+                  technologies={technologies.frontend}
+              />
+              <SkillSection
+                  title="Backend Development"
+                  icon={<Server className="w-6 h-6" />}
+                  technologies={technologies.backend}
+              />
+              <SkillSection
+                  title="Database"
+                  icon={<Database className="w-6 h-6" />}
+                  technologies={technologies.database}
+              />
+              <SkillSection
+                  title="Game Development"
+                  icon={<Gamepad2 className="w-6 h-6" />}
+                  technologies={technologies.gameDev}
+              />
+              <SkillSection
+                  title="Design & Multimedia"
+                  icon={<Palette className="w-6 h-6" />}
+                  technologies={technologies.design}
+              />
+              <SkillSection
+                  title="Development Tools"
+                  icon={<Terminal className="w-6 h-6" />}
+                  technologies={technologies.tools}
+              />
+              <SkillSection
+                  title="Business & Management"
+                  icon={<Briefcase className="w-6 h-6" />}
+                  technologies={technologies.business}
+              />
+              <SkillSection
+                  title="Other Skills"
+                  icon={<Wrench className="w-6 h-6" />}
+                  technologies={technologies.other}
+              />
+            </div>
 
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.database}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>MongoDB</li>
-              <li>PostgreSQL</li>
-              <li>MySQL</li>
-              <li>Redis</li>
-              <li>Firebase</li>
-            </ul>
-          </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+              Language <span className="text-orange-500">Skills</span>
+            </h2>
 
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.gameDev}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Unity</li>
-              <li>C#</li>
-              <li>Game Design</li>
-              <li>3D Modeling</li>
-              <li>Animation</li>
-            </ul>
-          </div>
+            <div className="relative mb-12">
+              <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
+            </div>
 
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.design}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Figma</li>
-              <li>Adobe XD</li>
-              <li>Photoshop</li>
-              <li>Illustrator</li>
-              <li>UI/UX Design</li>
-            </ul>
-          </div>
-
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.tools}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Git & GitHub</li>
-              <li>Docker</li>
-              <li>VS Code</li>
-              <li>Webpack</li>
-              <li>Jest</li>
-            </ul>
-          </div>
-
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.business}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Project Management</li>
-              <li>Agile/Scrum</li>
-              <li>Team Leadership</li>
-              <li>Problem Solving</li>
-              <li>Communication</li>
-            </ul>
-          </div>
-
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t.skills.sections.other}
-            </h3>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Technical Writing</li>
-              <li>Public Speaking</li>
-              <li>Research</li>
-              <li>Mentoring</li>
-              <li>Continuous Learning</li>
-            </ul>
-          </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {languages.map((language) => (
+                  <motion.div
+                      key={language.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ duration: 0.6 }}
+                      className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg"
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-2xl">{language.flag}</span>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        {language.name}
+                      </h3>
+                    </div>
+                    <div className="inline-block px-3 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-400 rounded-full text-sm font-medium">
+                      {language.level}
+                    </div>
+                  </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
-
-        <div className="mt-16 text-center">
-          <h3 className="text-2xl font-semibold mb-8 text-gray-900 dark:text-white">
-            {t.skills.languageSkills}
-          </h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="bg-white dark:bg-gray-700 px-6 py-3 rounded-lg shadow-md">
-              <span className="text-gray-900 dark:text-white font-medium">English</span>
-              <span className="text-gray-600 dark:text-gray-300 ml-2">(C1)</span>
-            </div>
-            <div className="bg-white dark:bg-gray-700 px-6 py-3 rounded-lg shadow-md">
-              <span className="text-gray-900 dark:text-white font-medium">Polish</span>
-              <span className="text-gray-600 dark:text-gray-300 ml-2">(B2)</span>
-            </div>
-            <div className="bg-white dark:bg-gray-700 px-6 py-3 rounded-lg shadow-md">
-              <span className="text-gray-900 dark:text-white font-medium">Ukrainian</span>
-              <span className="text-gray-600 dark:text-gray-300 ml-2">(Native)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
   );
 };
 
