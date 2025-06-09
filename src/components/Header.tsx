@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Github, Code2, FileText } from 'lucide-react';
+import { Menu, X, Moon, Sun, Github, Code2, FileText, Languages } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,6 +90,43 @@ const Header = () => {
                 <FileText className="w-5 h-5 mr-1" />
                 CV
               </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex space-x-2"
+            >
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                  language === 'en'
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLanguage('uk')}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                  language === 'uk'
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                }`}
+              >
+                UK
+              </button>
+              <button
+                onClick={() => setLanguage('pl')}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                  language === 'pl'
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                }`}
+              >
+                PL
+              </button>
             </motion.div>
             <motion.button 
               onClick={toggleTheme}

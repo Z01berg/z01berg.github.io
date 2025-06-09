@@ -203,8 +203,8 @@ const Projects = () => {
                 </button>
               </div>
               {lastFetchTime && (
-                <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
-                  <Clock className="w-4 h-4 mr-1 text-gray-600 dark:text-gray-300" />
+                <div className="text-sm text-gray-700 dark:text-gray-200 flex items-center">
+                  <Clock className="w-4 h-4 mr-1 text-gray-700 dark:text-gray-200" />
                   Last updated: {lastFetchTime}
                 </div>
               )}
@@ -217,7 +217,7 @@ const Projects = () => {
           </div>
 
           {error && (
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-8 rounded">
+            <div className="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 mb-8 rounded">
               <p>{error}</p>
             </div>
           )}
