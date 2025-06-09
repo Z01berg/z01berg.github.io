@@ -1,19 +1,28 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 class AIService {
-    private genAI: GoogleGenerativeAI;
-    private model: any;
+    private genAI: GoogleGenerativeAI | null = null;
+    private model: any = null;
 
     constructor() {
         const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-        if (!apiKey) {
-            throw new Error('Gemini API key is not configured');
+        if (apiKey) {
+            try {
+                this.genAI = new GoogleGenerativeAI(apiKey);
+                this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+            } catch (error) {
+                console.warn('Failed to initialize Gemini AI:', error);
+            }
+        } else {
+            console.warn('Gemini API key is not configured. AI features will be disabled.');
         }
-        this.genAI = new GoogleGenerativeAI(apiKey);
-        this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     }
 
     async chat(projectInfo: string, userMessage: string): Promise<string> {
+        if (!this.model) {
+            return 'AI features are currently disabled. Please configure the Gemini API key to enable AI assistance.';
+        }
+
         try {
             const chat = this.model.startChat({
                 history: [

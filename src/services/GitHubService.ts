@@ -77,32 +77,41 @@ class GitHubService {
   };
 
   constructor() {
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
+    const token = import.meta.env.VITE_HUB_TOKEN;
     if (!token) {
-      throw new Error('GitHub token is not configured');
+      console.warn('GitHub token is not configured. Some features may be limited.');
+      this.token = '';
+    } else {
+      this.token = token;
     }
-    this.token = token;
   }
 
   private async fetchWithAuth(url: string, params = {}) {
     try {
+      const headers: any = {
+        'Accept': 'application/vnd.github.v3+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      };
+
+      if (this.token) {
+        headers['Authorization'] = `Bearer ${this.token}`;
+      }
+
       const response = await axios.get(url, {
-        headers: {
-          'Authorization': `Bearer ${this.token}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'X-GitHub-Api-Version': '2022-11-28'
-        },
+        headers,
         params
       });
       return response.data;
     } catch (error: any) {
       if (error.response?.status === 403) {
-        throw new Error('GitHub API rate limit exceeded. Please try again later.');
+        console.warn('GitHub API rate limit exceeded or unauthorized. Please check your token configuration.');
+        return null;
       }
       if (error.response?.status === 404 || error.response?.status === 409) {
         return null;
       }
-      throw error;
+      console.error('GitHub API error:', error);
+      return null;
     }
   }
 
